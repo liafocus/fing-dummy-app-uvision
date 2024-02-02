@@ -90,8 +90,29 @@ Se realizó una evaluación sobre la viabilidad de introducir fallas mediante br
 
 Además, para distinguir la inyección de fallas en una misma línea de código en función de la vez que se ejecutó, se busca establecer un breakpoint en la n-ésima iteración a través de esa línea e inyectar la falla. Por lo tanto, la idea es determinar si el retraso en la inyección de la falla aumenta con n. Con este fin, se crearon los scripts time_ref_n.ini y time_fault_n.ini.
 
+ Tabla de resultados (2/2/24)
+
+n = 1000
+| Iter | T s/falla | T c/falla |
+|------|-----------|-----------|
+| 1    | 66.810 s  | 66.529 s  |
+| 2    | 66.435 s  | 66.303 s  |
+| 3    | 66.153 s  | 66.381 s  |
+| 4    | 66.301 s  | 66.011 s  |
+| 5    | 66.799 s  | 65.100 s  |
+| prom | 66.4996 s | 66.2648 s |
 
 
+Tabla de resultados  n = 1000 con con trace y GUI activados (2/2/24) 
+
+n = 1000
+| Iter | T s/falla | T c/falla |
+|------|-----------|-----------|
+| 1    | 271.17 s  | 264.98 s  |
+| 2    | 268.64 s  | 239.25 s  |
+| 3    | 264.78 s  | 241.30 s  |
+
+* Cuando se quiere inyectar la falla obteniendo el trace dos veces seguidas, en la segunda no detecta más el hardware y hay que desenchufar y enchufar la placa STM32. El programa tampoco queda corrido después de la primera vez que sale del debug, entonces estos datos no se que tan confiables son. Ahora antes de irme vi que empezó a correr de nuevo. Lo que se me ocurre es que capaz se queda sacando los datos de trace y demora un rato en poder volver a usarse. probar eso el lunes!!
 
 ### Mover código a RAM
 

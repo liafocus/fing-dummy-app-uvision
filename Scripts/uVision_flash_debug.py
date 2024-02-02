@@ -15,7 +15,7 @@ def keil_flash():
     subprocess.run(cmd, shell=True)
 
 if __name__ == "__main__":
-    # REM Flash the application (-b) in headless mode (-j0)
+    # Flash the application (-b) in headless mode (-j0)
     keil_flash()
     
     # Start measuring time
