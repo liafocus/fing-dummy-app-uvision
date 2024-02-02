@@ -19,12 +19,14 @@
 
 __IO uint32_t uwTick;
 uint32_t bkpt_counter = 0;
+uint32_t hundred = 100;
 /**
   * @brief  The application entry point.
   * @retval int
   */
 int main(void)
 {
+	uint32_t dummy = 0;
   /* MCU Configuration--------------------------------------------------------*/
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   /* Configure Flash prefetch, Instruction cache, Data cache */
@@ -64,8 +66,9 @@ int main(void)
     				|SysTick_CTRL_CLKSOURCE_Msk);
 
   while (1)
-  {
-	  //Infinite loop
+  { 
+		//Infinite loop
+		dummy++; 
   }
 }
 
@@ -73,7 +76,7 @@ void SysTick_Handler(void)
 {
   uwTick++;
   /*Toggle LEDs for every one second*/
-  if(uwTick >= 100){
+  if(uwTick >= hundred){
 	  GPIOD->BSRR = (((GPIOD->ODR)&(1<<12))&&(1<<13)) ? 1<<(13+16) : 1<<13;
 	  GPIOD->BSRR = (((GPIOD->ODR)&(1<<12))&&(1<<12)) ? 1<<(12+16) : 1<<12;
 	  uwTick=0;

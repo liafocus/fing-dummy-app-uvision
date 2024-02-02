@@ -52,11 +52,46 @@ Todo es desde windows (Por qué? por los programas)
 
 1. En el archivo uVision_flash_debug.bat, se debe actualizar la ruta del archivo UV4.exe para que corresponda con la ubicación en la computadora donde se esté utilizando.
 
+
+X. Crear un entorno virtual de conda par usar los cripts de python.
+
+- a veces me pasa que al no me deja flashear porque otro proceso está usando la aplicación (o algo así) y la solución es desenchufar y enchufar (debgger o placa?)
+
 ### Medición de tiempos
 
 Se realizó una evaluación sobre la viabilidad de introducir fallas mediante breakpoints (¿por hardware?), interrumpiendo el programa, modificando un bit y reanudando la ejecución hasta un punto determinado (n veces en el bucle). Para este propósito, se desarrollaron varios scripts de debug: time_ref.ini y time_fault.ini. En time_ref.ini ...(añadir más explicación)... y en time_fault.ini ...(añadir más explicación)...
 
+ Tabla de resultados  (2/2/24)
+
+| iter | T s/falla | T c/falla |
+|------|-----------|-----------|
+| 1    | 3.400 s   | 3.248 s   |
+| 2    | 3.342 s   | 3.307 s   |
+| 3    | 3.357 s   | 3.318 s   |
+| 4    | 3.659 s   | 3.313 s   |
+| 5    | 3.204 s   | 3.363 s   |
+| 6    | 3.227 s   | 3.328 s   |
+| 7    | 3.353 s   | 3.378 s   |
+| 8    | 3.470 s   | 3.365 s   |
+| 9    | 3.302 s   | 3.373 s   |
+| 10   | 3.390 s   | 3.420 s   |
+| 11   | 3.360 s   | 3.395 s   |
+| 12   | 3.430 s   | 3.510 s   |
+| 13   | 3.347 s   | 3.619 s   |
+| 14   | 3.357 s   | 3.298 s   |
+| 15   | 3.219 s   | 3.339 s   |
+| 16   | 3.292 s   | 3.393 s   |
+| 17   | 3.337 s   | 3.284 s   |
+| 18   | 3.368 s   | 3.437 s   |
+| 19   | 3.233 s   | 3.347 s   |
+| 20   | 3.393 s   | 3.256 s   |
+| prom | 3.36435 s | 3.3755 s  |
+
+
 Además, para distinguir la inyección de fallas en una misma línea de código en función de la vez que se ejecutó, se busca establecer un breakpoint en la n-ésima iteración a través de esa línea e inyectar la falla. Por lo tanto, la idea es determinar si el retraso en la inyección de la falla aumenta con n. Con este fin, se crearon los scripts time_ref_n.ini y time_fault_n.ini.
+
+
+
 
 ### Mover código a RAM
 
