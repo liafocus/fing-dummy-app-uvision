@@ -65,7 +65,7 @@ int main(void)
   	     			|SysTick_CTRL_ENABLE_Msk
     				|SysTick_CTRL_CLKSOURCE_Msk);
 
-  while (1)
+  while (dummy<3)
   { 
 		//Infinite loop
 		dummy++; 
