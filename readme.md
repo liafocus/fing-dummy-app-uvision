@@ -2,7 +2,7 @@
 
 ### Descripción
 
-Este documento detalla los pasos necesarios para configurar el entorno de desarrollo destinado a realizar pruebas de debugging, scripting y automatización de inyección de fallas en un sistema basado en STM32F407-DISC1. Se abordan aspectos como la configuración del hardware, limitaciones de los IDEs Keil uVision y STM32 Cube, y la automatización de pruebas utilizando scripts en Python y archivos .bat y .ini.
+Este README proporciona una guía detallada para configurar y automatizar el proceso de inyección de fallas en el desarrollo de software para STM32F407 utilizando el ULINKpro y Keil uVision. Describe los pasos necesarios para establecer la conexión de hardware, migrar programas entre entornos de desarrollo, y configurar herramientas para la inyección y medición de fallas. Además, aborda las limitaciones de los IDEs CubeIDE y Keil uVision, proponiendo soluciones y estrategias para superarlas. El README también incluye resultados de pruebas de inyección de fallas y mediciones de tiempos, así como referencias útiles para la configuración y uso de las herramientas.
 
 ### Hardware
 
@@ -10,11 +10,50 @@ Este documento detalla los pasos necesarios para configurar el entorno de desarr
 - ULINKpro
 - Adaptador de conector ETM + Debug 20-pin a placa STM32 
 
+[//]: # (Adjuntar fotos de cómo conectarlos !!!!!)
+
+
+### Automatización de inyección de fallas
+
+Todo es desde windows (Por qué? por los programas)
+
+- Script python -> script .bat -> script .ini (Parece que no hay otra opción)
+- El python no es necesario por ahora pero podria permitir más funcionalidades
+- explicar paso a paso (guía) cómo modificar los paths para que funcione en tu propia PC
+  - en script de python
+  - en .bat
+  - en uVision   
+
+#### Guía
+
+**Set up del entorno de inyección de fallas**
+
+1. Conectar la placa STM32F407, utilizando los jumpers para asegurar que esté utilizando el debugger incorporado en la placa.
+
+2. Seguir los pasos para migrar el programa de CubeIDE hacia Keil uVision.
+
+3. Desconectar jumpers de debugger y conectar ULINKpro con su adaptador.
+
+4. Crear un entorno virtual de conda para usar los cripts de python.
+
+5. coverage y herramienta a instalar...
+
+**Correr el programa**
+
+1. En los archivos *uVision_flash_debug.py* y *uVision_flash_debug.bat*, se debe actualizar la ruta del archivo *UV4.exe* para que corresponda con la ubicación en la PC donde se esté utilizando.
+
+...
+
+10. Se obtienen los archivos log, trace, ... en la carpeta Output_data.
+
+
+[//]: # (a veces me pasa que al no me deja flashear porque otro proceso está usando la aplicación (o algo así) y la solución es desenchufar y enchufar la placa. )
+
 #### Desarrollo de adaptador para ULINKpro
 
 ...
 
-### Limitaciones de los IDEs Keil uVision y STM32 Cube
+### Uso de los IDEs Keil uVision y STM32 Cube
 
 - Objetivo: Obtener el trace de un programa
 - Problema: El debugger que viene con la placa STM32F407-DISC1 no permite obtener el trace
@@ -27,9 +66,16 @@ uVision permite utilizar algunas de sus herramientas desde la línea de comandos
 
 No se logró encontrar comandos para utilizar con el ULINKpro, por lo que no parece que sea posible obtener el trace desde la linea de comandos. Frente a ello, se piensa que la mejor opción es usar un script de uVision,basándose en el tutorial https://www.keil.com/appnotes/files/apnt_307.pdf (aunque está hecho para el ULINKplus, es de mucha ayuda).
 
+#### Migrar un programa de CubeIDE a Keil uVision
+
+
+#### Exportar trace desde línea de comandos
+
 Consulta hacha en el support de ARM:
 
 ```
+Subject: Exporting trace.csv file from Keil uVision script or command line
+
 Hello ARM community,
 I am currently working with Keil uVision and ULINKpro for embedded software development, with the goal of automating tests. I am trying to automate the process of exporting the trace.csv file from within a script or command line, but I haven't been able to find any documentation or resources on how to achieve this.
 I have searched through the documentation, application notes, and forums, but I couldn't find any information on exporting the trace.csv file programmatically. Some users have asked similar questions in the past, but unfortunately, they didn't receive any replies.
@@ -60,44 +106,11 @@ Kind regards,
 Kevin
 
 For more support information, documentation, downloads and other useful resources see: https://developer.arm.com/support/
-
 ```
-
-
-
-### Configuración Keil uVision
-
-- Adjuntar fotos de la configuración del programa
-
-### Prueba de herramientas de debugging y scripting mediante programa Dummy
-
-...
-
-### Automatización de inyección de fallas
-
-Todo es desde windows (Por qué? por los programas)
-
-- Script python -> script .bat -> script .ini (Parece que no hay otra opción)
-- El python no es necesario por ahora pero podria permitir más funcionalidades
-- explicar paso a paso (guía) cómo modificar los paths para que funcione en tu propia PC
-  - en script de python
-  - en .bat
-  - en uVision   
-
-#### Guía
-
-1. En el archivo uVision_flash_debug.bat, se debe actualizar la ruta del archivo UV4.exe para que corresponda con la ubicación en la computadora donde se esté utilizando.
-
-
-X. Crear un entorno virtual de conda par usar los cripts de python.
-
-Y. coverage y herramienta a instalar.
-
-[//]: # (a veces me pasa que al no me deja flashear porque otro proceso está usando la aplicación (o algo así) y la solución es desenchufar y enchufar la placa. )
 
 ### Medición de tiempos
 
-Se realizó una evaluación sobre la viabilidad de introducir fallas mediante breakpoints (¿por hardware?), interrumpiendo el programa, modificando un bit y reanudando la ejecución hasta un punto determinado (n veces en el bucle). Para este propósito, se desarrollaron varios scripts de debug: _time_ref.ini_ y _time_fault.ini_.
+Se realizó una evaluación sobre la viabilidad de introducir fallas mediante breakpoints (mediante hardware), interrumpiendo el programa, modificando un bit y reanudando la ejecución hasta un punto determinado (n veces en el bucle). Para este propósito, se desarrollaron varios scripts de debug: _time_ref.ini_ y _time_fault.ini_.
 
 - _time_ref.ini_ comienza abriendo un archivo de registro llamado "Test.log". Luego, ejecuta un programa hasta alcanzar un punto específico definido en el archivo "main.c" en la línea 71. Después de alcanzar este punto, detiene la ejecución del programa y cierra el archivo de registro. Durante la ejecución, imprime mensajes indicando el inicio y el final del script. 
 
@@ -169,12 +182,12 @@ Conclusión: El tiempo que se demora en inyectar la falla aumenta cuando cuando 
 Tabla de resultados  n = 1000 con con trace y GUI activados (2/2/24) 
 
 n = 1000
-| Iter | T s/falla | T c/falla |
-|------|-----------|-----------|
-| 1    |   | 264.98 s  |
-| 2    |   | 239.25 s  |
-| 3    |   | 241.30 s  |
-
+| Iter   | T s/falla | T c/falla |
+|--------|-----------|-----------|
+| 1      |   | 264.98 s  |
+| 2      |   | 239.25 s  |
+| 3      |   | 241.30 s  |
+|**prom**|   |           |
 
 Tabla de resultados  n = 1000 con con trace y GUI activados (5/2/24) 
 
@@ -190,6 +203,7 @@ n = 100
 | 7    |   | 28.749 s  |
 | 8    |   | 29.153 s  |
 | 9    |   | 28.834 s  |
+|**prom**|   |           |
 
 n = 10
 | Iter | T s/falla | T c/falla |
@@ -198,6 +212,7 @@ n = 10
 | 2    |   | 6.3918 s  |
 | 3    |   | 6.2450 s  |
 | 4    |   | 6.2572 s  |
+|**prom**|   |           |
 
 * Cuando se quiere inyectar la falla obteniendo el trace dos veces seguidas, en la segunda no detecta más el hardware y hay que desenchufar y enchufar la placa STM32. El programa tampoco queda corriendo luego de salir del debug. 
 
@@ -208,15 +223,17 @@ n = 10
 
 
 
-
-
 ### Mover código a RAM
 
 ... 
 
 ### Trabajar sin HAL
 
-...
+#### Programa dummy
+
+Para trabajar sin uso de una HAL en el programa dummy se copiaron todas las funciones necesarias de la HAL de CubeIDE en los archivos *gcc.c*, *gpio.c* y sus respectivos headerfiles *gcc.h* y *gpio.h*.
+Además de asimilarse más a las condiciones del software de la UNAM, permite mayor facilidad en la migración de un programa desarrollado en CubeIDE hacia Keil uVision.
+
 
 ## Referencias
 
@@ -224,3 +241,24 @@ n = 10
 - [uVision debug commands](https://developer.arm.com/documentation/101407/0539/Debug-Commands?lang=en)
 - [Test automation with MDK and ULINKplus](https://www.keil.com/appnotes/files/apnt_307.pdf)
 - [gcovr](https://gcovr.com/en/stable/)
+- [STMicroelectronics Community Article: How to place and execute STM32 code in SRAM memory with STM32CubeIDE](https://community.st.com/t5/stm32-mcus/how-to-place-and-execute-stm32-code-in-sram-memory-with/ta-p/49528)
+
+## Anexo
+
+### Configuración Keil uVision
+
+![0](docs/img/0_Environment.png)
+![1](docs/img/1_Device.png)
+![2](docs/img/2_Target.png)
+![3](docs/img/3_Output.png)
+![4](docs/img/4_Listing.png)
+![5](docs/img/5_User.png)
+![6](docs/img/6_CC++.png)
+![7](docs/img/7_Asm.png)
+![8](docs/img/8_Linker.png)
+![9_0](docs/img/9_0_Debug.png)
+![9_1](docs/img/9_1_Debug_Debug.png)
+![9_2](docs/img/9_2_Debug_Trace.png)
+![9_3](docs/img/9_3_Debug_FlashDownload.png)
+![9_4](docs/img/9_4_Debug_Pack.png)
+![10](docs/img/10_Utilities.png)
