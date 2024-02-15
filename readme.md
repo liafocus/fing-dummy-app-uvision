@@ -1,30 +1,43 @@
-# Etapa 1: Setup entorno de desarrollo (borrador)
-
-### Descripción
+#  Introducción
 
 Este README proporciona una guía detallada para configurar y automatizar el proceso de inyección de fallas en el desarrollo de software para STM32F407 utilizando el ULINKpro y Keil uVision. Describe los pasos necesarios para establecer la conexión de hardware, migrar programas entre entornos de desarrollo, y configurar herramientas para la inyección y medición de fallas. Además, aborda las limitaciones de los IDEs CubeIDE y Keil uVision, proponiendo soluciones y estrategias para superarlas. El README también incluye resultados de pruebas de inyección de fallas y mediciones de tiempos, así como referencias útiles para la configuración y uso de las herramientas.
 
-### Hardware
+## Tabla de Contenidos
+1. [Objetivo](#objetivo)
+2. [Partes del Sistema](#partes-del-sistema)
+3. [Arquitectura del Sistema](#arquitectura-del-sistema)
+4. [Buildeame!](#buildeame)
+5. [Limpiar carpeta `build`](#limpiar-carpeta-build)
+6. [Instrucciones de Ejecución](#instrucciones-de-ejecución)
+
+# Setup entorno de desarrollo
+
+## Hardware
 
 - STM32F407-DISC1
 - ULINKpro
 - Adaptador de conector ETM + Debug 20-pin a placa STM32 
 
-[//]: # (Adjuntar fotos de cómo conectarlos !!!!!)
 
+![adaptador_v1](docs/img/adaptador_v2_conexion.jpg)
 
-### Automatización de inyección de fallas
+## Automatización de inyección de fallas
 
-Todo es desde windows (Por qué? por los programas)
+La automatización de la inyección de fallas, en este caso, se realiza en un entorno Windows debido a las herramientas disponibles. El proceso implica una secuencia de ejecución que comienza con un script en Python, seguido de un archivo batch (.bat) y finalmente un script de debug (.ini). Aunque Python no es obligatorio en este momento, su inclusión podría brindar funcionalidades adicionales en el futuro.
 
-- Script python -> script .bat -> script .ini (Parece que no hay otra opción)
-- El python no es necesario por ahora pero podria permitir más funcionalidades
-- explicar paso a paso (guía) cómo modificar los paths para que funcione en tu propia PC
-  - en script de python
-  - en .bat
-  - en uVision   
+Para garantizar que el proceso funcione correctamente en cualquier PC, es importante proporcionar una guía paso a paso para modificar los paths en los diferentes componentes:
 
-#### Guía
+1. **Script de Python**:
+   - Se debe asegurar que las rutas especificadas dentro del script de Python sean relativas o absolutas según sea necesario para ubicar los archivos de manera correcta.
+
+2. **Archivo .bat**:
+   - Al modificar el archivo .bat, es crucial actualizar la ruta del archivo UV4.exe para que coincida con la ubicación de este archivo en la PC donde se ejecutará el proceso.
+
+3. **Script uVision**:
+   - Dentro del script de configuración .ini, se deben ajustar las rutas según sea necesario para asegurar que los archivos y recursos requeridos por uVision se encuentren en ubicaciones accesibles.
+ 
+
+### Guía
 
 **Set up del entorno de inyección de fallas**
 
@@ -49,27 +62,33 @@ Todo es desde windows (Por qué? por los programas)
 
 [//]: # (a veces me pasa que al no me deja flashear porque otro proceso está usando la aplicación (o algo así) y la solución es desenchufar y enchufar la placa. )
 
-#### Desarrollo de adaptador para ULINKpro
+### Desarrollo de adaptador para ULINKpro
 
 ...
 
-### Uso de los IDEs Keil uVision y STM32 Cube
+## Uso de los IDEs Keil uVision y STM32 Cube
 
-- Objetivo: Obtener el trace de un programa
-- Problema: El debugger que viene con la placa STM32F407-DISC1 no permite obtener el trace
-- Solución: ULINKpro ArmKeil debugger
-- Problema 2: CubeIDE no soporta el debugger ULINKpro
-- Solución 2: IDE uVision de keil (único IDE compatible con ULINKpro)
+El objetivo es obtener el trace del programa durante su ejecución. Sin embargo, el debugger integrado en la placa STM32F407-DISC1 no proporciona esta capacidad, lo que plantea un problema significativo. La solución a este inconveniente es el uso del debugger ULINKpro ArmKeil, debido a su capacidad para obtener un rastreo detallado y preciso del programa en ejecución.
 
-Como el fin es poder obtener el Trace del programa, se debe utilizar el debugger ULINKpro de ArmKeil. Este debugger solo se puede utilizar con el IDE de Keil, uVision.
-uVision permite utilizar algunas de sus herramientas desde la línea de comandos (ref: https://developer.arm.com/documentation/101407/0539/Command-Line), pero no incluyen nada sobre el trace.
+No obstante, surge un segundo problema: CubeIDE, el entorno de desarrollo utilizado, no es compatible con el debugger ULINKpro. En este sentido, la solución consiste en emplear el IDE uVision de Keil, único entorno compatible con el debugger ULINKpro. Esto permite obtener el rastreo necesario para el desarrollo y el debug del programa de manera eficiente.
 
-No se logró encontrar comandos para utilizar con el ULINKpro, por lo que no parece que sea posible obtener el trace desde la linea de comandos. Frente a ello, se piensa que la mejor opción es usar un script de uVision,basándose en el tutorial https://www.keil.com/appnotes/files/apnt_307.pdf (aunque está hecho para el ULINKplus, es de mucha ayuda).
+uVision ofrece la posibilidad de utilizar algunas de sus herramientas desde la línea de comandos de Windows, como se detalla en la [documentación oficial](https://developer.arm.com/documentation/101407/0539/Command-Line). Sin embargo, es importante destacar que estos comandos no incluyen opciones específicas para obtener el trace del programa, lo que limita la capacidad de obtener el trace directamente desde la línea de comandos de Windows.
 
-#### Migrar un programa de CubeIDE a Keil uVision
+Ante esta limitación, se determinó que la mejor solución es aprovechar un script de debug en uVision. Este enfoque se basa en el [siguiente tutorial](https://www.keil.com/appnotes/files/apnt_307.pdf). A pesar de que el tutorial está diseñado para el uso con ULINKplus, proporciona una base útil para la implementación de scripts de debug en uVision, lo que resulta de mucha ayuda para resolver la automatización de la inyección de fallas.
 
+### Migrar un programa de CubeIDE a Keil uVision
 
-#### Exportar trace desde línea de comandos
+**Pasos a seguir:**
+
+1. 
+
+2. 
+
+3. 
+
+4. 
+
+### Exportar trace desde línea de comandos
 
 Consulta hacha en el support de ARM:
 
@@ -85,12 +104,11 @@ Best regards,
 Lía 
 ```
 
-Respuesta:
+Respuestas:
 ```
 From Kevin Bernhardt - Arm Partner Enablement Group
 
 Lia,
-
 
 You can use the trace information that appears in the event recorder. 
 ER STAT path\filename
@@ -99,8 +117,6 @@ see https://developer.arm.com/documentation/101407/0539/Debug-Commands/EventReco
 You can also save information in a GCOV format:
 see https://developer.arm.com/documentation/101407/0539/Debug-Commands/COVERAGE/COVERAGE-GCOV-Export
 
-
-
 Kind regards,
 
 Kevin
@@ -108,7 +124,61 @@ Kevin
 For more support information, documentation, downloads and other useful resources see: https://developer.arm.com/support/
 ```
 
-### Medición de tiempos
+```
+Hello Kevin,
+
+Thank you for your response and the provided links.
+
+I've reviewed the Event Recorder documentation and the COVERAGE-GCOV-Export feature, but unfortunately, it seems that neither of these options provides the specific trace information I'm looking for.
+
+To clarify, the trace information I'm interested in exporting programmatically is the list of all instructions executed during a test session. This level of detail is crucial for our test automation process, as we need to analyze and validate the execution flow of our embedded software.
+
+Could you please provide further guidance on how to export this specific trace information, if available? Alternatively, if there are other features or methods within Keil uVision or ULINKpro that can capture and export this level of trace detail, I would greatly appreciate any information on how to utilize them for test automation purposes.
+
+Thank you for your assistance and support.
+ 
+Best regards,
+
+Lía Gómez
+
+Focus.uy
+```
+
+```
+From Kevin Bernhardt - Arm Partner Enablement Group
+
+Lia,
+
+You can use the trace information that appears in the event recorder. 
+ER STAT path\filename
+see https://developer.arm.com/documentation/101407/0539/Debug-Commands/EventRecorder?lang=en
+
+You can also save information in a GCOV format:
+see https://developer.arm.com/documentation/101407/0539/Debug-Commands/COVERAGE/COVERAGE-GCOV-Export
+
+Kind regards,
+
+Kevin
+```
+
+* Al momento no se ha logrado exportarlo y no se tiene más información.
+
+## Mover código a RAM
+
+... 
+
+### Guía
+
+...
+
+## Trabajar sin HAL
+
+### Programa dummy
+
+Para trabajar sin uso de una HAL en el programa dummy se copiaron todas las funciones necesarias de la HAL de CubeIDE en los archivos *gcc.c*, *gpio.c* y sus respectivos headerfiles *gcc.h* y *gpio.h*.
+Además de asimilarse más a las condiciones del software de la UNAM, permite mayor facilidad en la migración de un programa desarrollado en CubeIDE hacia Keil uVision.
+
+## Medidas de tiempos de ejecución
 
 Se realizó una evaluación sobre la viabilidad de introducir fallas mediante breakpoints (mediante hardware), interrumpiendo el programa, modificando un bit y reanudando la ejecución hasta un punto determinado (n veces en el bucle). Para este propósito, se desarrollaron varios scripts de debug: _time_ref.ini_ y _time_fault.ini_.
 
@@ -178,7 +248,6 @@ A continuación se presentan los resultados de inyectar fallas en la n-ésima it
 
 Conclusión: El tiempo que se demora en inyectar la falla aumenta cuando cuando el número de iteración en que se inyecta la falla es mayor (no queda claro en que proporción)
 
-
 Tabla de resultados  n = 1000 con con trace y GUI activados (2/2/24) 
 
 n = 1000
@@ -208,11 +277,11 @@ n = 100
 n = 10
 | Iter | T s/falla | T c/falla |
 |------|-----------|-----------|
-| 1    |   | 6.5042 s  |
-| 2    |   | 6.3918 s  |
-| 3    |   | 6.2450 s  |
-| 4    |   | 6.2572 s  |
-|**prom**|   |           |
+| 1    | 3.751 s   | 6.5042 s  |
+| 2    | 3.812 s   | 6.3918 s  |
+| 3    | 3.941 s   | 6.2450 s  |
+| 4    | 3.777 s   | 6.2572 s  |
+| **Prom** | 3.82025 s | 6.34905 s |
 
 * Cuando se quiere inyectar la falla obteniendo el trace dos veces seguidas, en la segunda no detecta más el hardware y hay que desenchufar y enchufar la placa STM32. El programa tampoco queda corriendo luego de salir del debug. 
 
@@ -221,20 +290,6 @@ n = 10
 
 [//]: # (con n = 10 anda bien las primeras veces perop después deja de andar.)
 
-
-
-### Mover código a RAM
-
-... 
-
-### Trabajar sin HAL
-
-#### Programa dummy
-
-Para trabajar sin uso de una HAL en el programa dummy se copiaron todas las funciones necesarias de la HAL de CubeIDE en los archivos *gcc.c*, *gpio.c* y sus respectivos headerfiles *gcc.h* y *gpio.h*.
-Además de asimilarse más a las condiciones del software de la UNAM, permite mayor facilidad en la migración de un programa desarrollado en CubeIDE hacia Keil uVision.
-
-
 ## Referencias
 
 - [uVision from command line](https://developer.arm.com/documentation/101407/0539/Command-Line)
@@ -242,8 +297,36 @@ Además de asimilarse más a las condiciones del software de la UNAM, permite ma
 - [Test automation with MDK and ULINKplus](https://www.keil.com/appnotes/files/apnt_307.pdf)
 - [gcovr](https://gcovr.com/en/stable/)
 - [STMicroelectronics Community Article: How to place and execute STM32 code in SRAM memory with STM32CubeIDE](https://community.st.com/t5/stm32-mcus/how-to-place-and-execute-stm32-code-in-sram-memory-with/ta-p/49528)
+- [Event Recorder and Component Viewer](https://www.keil.com/pack/doc/compiler/EventRecorder/html/er_use.html)
 
 ## Anexo
+
+### Relevamiento adaptador del ULink Pro
+
+Del ULink Pro sale un ribbon con 20 cables que va a un conector  Cortex Debug+ETM  (Documentation – Arm Developer) de paso fino (0.05”), y además viene con el bundle un adaptador a 20 pines de paso “estándar” (0.1”). El routeo no es pin a pin (ie pin 1 del conector chico con pin 1 del conector grande, pin 2 con pin 2, etc), por lo que se relevó este adaptador para determinar el enrutamiento de los pines y como resultado se obtuvo la siguiente tabla.
+
+| Cortex Debug+ETM | Descripción      | Adaptador 20 a 20 pines| STM32F4 |
+| ---------------- | ---------------- | ---------------------- | ------- |
+| 1                | VTref            | 19                     | VCC     |
+| 2                | SWIO / TMS       | 13                     | PA13    |
+| 3                | GND              | \*                     | GND     |
+| 4                | SWDCLK / TCLK    | 11                     | PA14    |
+| 5                | GND              | \*                     | GND     |
+| 6                | SWO / TDO        | 7                      | PB3     |
+| 7                | \-               | \-                     | \-      |
+| 8                | NC / TDI         | 15                     | \-      |
+| 9                | GNDDetect        | \-                     | \-      |
+| 10               | nRESET           | 5                      | NRST    |
+| 11               | GND / TgPwr+Cap  | \-                     | \-      |
+| 12               | TRACECLK         | 9                      | PE2     |
+| 13               | GND / TgtPwr+Cap | \-                     | \-      |
+| 14               | TRACEDATA [0]    | \-                     | \-      |
+| 15               | GND              | \*                     | GND     |
+| 16               | TRACEDATA [1]    | 17                     | PE4     |
+| 17               | GND              | \*                     | GND     |
+| 18               | TRACEDATA [2]    | 3                      | PE5     |
+| 19               | GND              | \*                     | GND     |
+| 20               | TRACEDATA [3]    | 1                      | PE6     |
 
 ### Configuración Keil uVision
 
@@ -262,3 +345,17 @@ Además de asimilarse más a las condiciones del software de la UNAM, permite ma
 ![9_3](docs/img/9_3_Debug_FlashDownload.png)
 ![9_4](docs/img/9_4_Debug_Pack.png)
 ![10](docs/img/10_Utilities.png)
+
+### Adaptador para ULINKpro
+
+#### Primera versión
+
+![adaptador_v1](docs/img/adaptador_v1.jpg)
+
+#### Set-up de relevamiento primera versión
+
+![adaptador_v1_setup](docs/img/adaptador_v1_relevamiento.jpg)
+
+#### Segunda versión 
+
+![adaptador_v1](docs/img/adaptador_v2_back.jpg)

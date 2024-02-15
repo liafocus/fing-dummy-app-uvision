@@ -16,6 +16,7 @@
   */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "EventRecorder.h"
 
 __IO uint32_t uwTick;
 uint32_t bkpt_counter = 0;
@@ -26,6 +27,7 @@ uint32_t hundred = 100;
   */
 int main(void)
 {
+	EventRecorderInitialize (EventRecordAll, 1);    // initialize and start Event Recorder
 	uint32_t dummy = 0;
   /* MCU Configuration--------------------------------------------------------*/
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
@@ -65,11 +67,12 @@ int main(void)
   	     			|SysTick_CTRL_ENABLE_Msk
     				|SysTick_CTRL_CLKSOURCE_Msk);
 
-  while (dummy<3)
+  while (dummy<102)
   { 
 		//Infinite loop
 		dummy++; 
   }
+	EventRecorderStop ();        // stop the recording of any events
 }
 
 void SysTick_Handler(void)
