@@ -12,9 +12,16 @@ Para poder agregar estas flags desde el STM32CubeIDE:
 
 * En esta sección se verá un Line Edit con la leyenda `Command`, el cual originalmente dice `gcc`. Es allí donde se debe agregar `-gdwarf-4 -gstrict-dwarf -fvar-tracking-assignments`. Ver capura de pantalla.
 
-* Una vez hecho este cambio, hacer click en `Apply` y luego en `Apply and Close`.
+* De igual manera se debe agregar las mismas banderas al Line Edit con la leyenda `Command`, sin eliminar lo que ya está escrito (`gcc` o `g++`), en las secciones `MCU GCC Assembler` y `MCU G++ Compiler`.
+
 
 ![01](img/01.png)
+
+* Luego, también desntro de `C/C++ Build` -> `Settings` -> `Tool Settings`, ir a las secciones `MCU GCC Compiler`-> `Optimization` y a `MCU G++ Compiler`-> `Optimization`, en ambos casos se debe seleccionar la opción de optimización `Optimize for Debug (-Og)`. Ver captura de pantalla.
+
+![04](img/04.png)
+
+* Una vez hecho este cambio, hacer click en `Apply` en cada sección y luego en `Apply and Close`.
 
 Solo resta hacer un clean build del proyecto, y de esta manera se genera un binario `.elf` listo para ser debuggeado en el Keil uVision.
 
